@@ -130,14 +130,13 @@ var objects = [
 		h: 480
 	}
 ]; // 0 image, 1 video, 2 audio, 3 link
+
 var Rows = function(settings){
 	this.rows = [];
 	this.addedObjects = 0;
 	for (set in settings) this[set] = settings[set];
 	console.log(':::::::::: START ::::::::::')
-	//while(this.addedObjects < this.objects.length - 1){
-		this.rows.push(new Row(this));
-	//}
+	this.rows.push(new Row(this));
 }
 var Row = function(parent){
 	console.log('---> Add row ['+parent.rows.length+']');
@@ -245,8 +244,11 @@ var AudioObj = function(parent,obj){
 }
 var LinkObj = function(parent,obj){
 	this.element = $('<div class="object link" />')
+	.html(obj.url)
 	.css({
-		'background' : '#fcde39',
+		'background' : '#fcde39 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAIAAABvSEP3AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkY1QjVDQkUyRDMwQjExRTM4QjdBQzhFNUFFMDc5QTUwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkNDM0EzODE2RDM1QjExRTM4QjdBQzhFNUFFMDc5QTUwIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RjVCNUNCRTBEMzBCMTFFMzhCN0FDOEU1QUUwNzlBNTAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RjVCNUNCRTFEMzBCMTFFMzhCN0FDOEU1QUUwNzlBNTAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5fkGO4AAAAeElEQVR42qTMuQ2AMBAFUViTQUDkAqiAiK4JqYOWMBISwqz3+hNN9PrzmDqsNGTCiWXbCSfGeSWcKE84EVQqIqL8CbfCEj6lRTgUgbAqMmFSVEJXLISiGAlJsRNNxUXwipdglABRKzHio4SJV0GIRwGJW8GJ0iXAAHuuIO76lEkaAAAAAElFTkSuQmCC) bottom right no-repeat',
+		'color' : '#00F',
+		'text-decoration' : 'underline',
 		'width' :  Math.ceil(parent.element.height()),
 		'height' :  Math.ceil(parent.element.height())
 	})
@@ -267,12 +269,26 @@ var VideoObj = function(parent,obj){
 	var self = this;
 	this.element = $('<div class="object video" />')
 	.css({
+		'position' : 'relative',
 		'width' :  Math.ceil(parent.element.height() / (obj.h/obj.w)),
 		'height' :  Math.ceil(parent.element.height())
 	})
 	.appendTo(parent.element);
 	$('<img src="'+obj.url+'" width="100%" height="100%" />').appendTo(this.element);
-
+	$('<a href="javascript:void(0)" />')
+	.css({
+		'display' : 'block',
+		'background' : 'url(https://d2b1xqaw2ss8na.cloudfront.net/static/img/spb_sprite.png)',
+		'background-position' : '-2px -135px',
+		'width' : 29,
+		'height': 29,
+		'position': 'absolute',
+		'left': '50%',
+		'top': '50%',
+		'margin-left' : -15,
+		'margin-top' : -15
+	})
+	.appendTo(this.element)
 }
 var settings = {
 	element : $('#container'),
@@ -281,3 +297,6 @@ var settings = {
 	objects : objects
 }
 var rows = new Rows(settings);
+$(window).bind('resize', function(){
+		
+	})
